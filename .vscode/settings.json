@@ -1,0 +1,28 @@
+{
+	"sqltools.connections": [
+		{
+			"mysqlOptions": {
+				"authProtocol": "default",
+				"enableSsl": "Disabled"
+			},
+			"previewLimit": 50,
+			"server": "localhost",
+			"port": 3306,
+			"driver": "MySQL",
+			"database": "yyyy",
+			"username": "root",
+			"name": "vscode",
+			"password": ""
+		}
+	],
+	"files.exclude": {
+		"**/node_modules": true,
+		"**/dist": true,
+		"**/.eslintrc.js": true,
+		"**/.prettierrc": true,
+		"**/package-lock.json": true,
+		"**/tsconfig.build.json": true,
+		"**/.gitignore": true
+		// "**/": true
+	}
+}

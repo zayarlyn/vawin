@@ -1,13 +1,13 @@
-import { ApolloServerPluginLandingPageLocalDefault } from '@apollo/server/plugin/landingPage/default';
-import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
-import { Module } from '@nestjs/common';
-import { GraphQLModule as NestJSGraphQLModule } from '@nestjs/graphql';
+import { ApolloServerPluginLandingPageLocalDefault } from '@apollo/server/plugin/landingPage/default'
+import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo'
+import { Module } from '@nestjs/common'
+import { GraphQLModule as NestJSGraphQLModule } from '@nestjs/graphql'
 // import { GraphQLJSON } from 'graphql-scalars';
-import { Order, OrderProduct, Product } from '@db/entities';
-import { TypeOrmModule } from '@nestjs/typeorm';
-import { OrderMutationResolver } from './mutation/OrderMutation';
-import { OrderListQueryResolver } from './query/OrderListQuery';
-import { ProductListQueryResolver } from './query/ProductListQuery';
+import { Order, OrderProduct, Product } from '@db/entities'
+import { TypeOrmModule } from '@nestjs/typeorm'
+import { OrderMutationResolver } from './mutation'
+import { OrderListQueryResolver, ProductListQueryResolver } from './query'
+import { ProductMutationResolver } from './mutation/ProductMutation'
 
 @Module({
   imports: [
@@ -29,6 +29,8 @@ import { ProductListQueryResolver } from './query/ProductListQuery';
   providers: [
     ProductListQueryResolver,
     OrderListQueryResolver,
+
+    ProductMutationResolver,
     OrderMutationResolver,
   ],
   // controllers: [],

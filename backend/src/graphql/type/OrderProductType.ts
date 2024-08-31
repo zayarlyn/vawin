@@ -1,16 +1,16 @@
-import { Field, ObjectType } from '@nestjs/graphql';
-import { BaseType } from './BaseType';
-import { ProductType } from './ProductType';
-import { Product } from '@db/entities';
+import { Field, ObjectType } from '@nestjs/graphql'
+import { BaseType } from './BaseType'
+import { ProductType } from './ProductType'
+import { Product } from '@db/entities'
 
 @ObjectType()
 export class OrderProductType extends BaseType {
   @Field()
-  orderId: number;
+  orderId: number
 
   @Field()
-  productId: number;
+  productId: number
 
   @Field(() => ProductType)
-  product: Product;
+  product: Product
 }

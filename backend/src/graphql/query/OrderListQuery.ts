@@ -1,8 +1,8 @@
-import { Order } from '@db/entities';
-import { Query, Resolver } from '@nestjs/graphql';
-import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
-import { OrderType } from '../type';
+import { Order } from '@db/entities'
+import { Query, Resolver } from '@nestjs/graphql'
+import { InjectRepository } from '@nestjs/typeorm'
+import { Repository } from 'typeorm'
+import { OrderType } from '../type'
 
 // FIXME: id = 1 is a mysql curse
 
@@ -20,9 +20,9 @@ export class OrderListQueryResolver {
         relations: { orderProducts: { product: true } },
         where: { id: 47 },
       }),
-    );
-    return this.order.find({ relations: { orderProducts: { product: true } } });
+    )
+    return this.order.find({ relations: { orderProducts: { product: true } } })
     // return this.billModel.findAll({ where });
-    return;
+    return
   }
 }

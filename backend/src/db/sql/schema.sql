@@ -1,5 +1,7 @@
 use yyyy;
 
+SET FOREIGN_KEY_CHECKS = 0;
+
 DROP TABLE IF EXISTS `product`;
 DROP TABLE IF EXISTS `order`;
 DROP TABLE IF EXISTS `order_product`;
@@ -15,7 +17,7 @@ CREATE TABLE `product` (
 
 CREATE TABLE `order` (
     id BIGINT PRIMARY KEY AUTO_INCREMENT,
-    date DATETIME NOT NULL,
+    status ENUM('draft', 'paid', 'packaging', 'shipped', 'completed', 'cancelled', 'refunded') NOT NULL DEFAULT 'draft',
     created_at DATETIME DEFAULT NOW(),
     updated_at DATETIME DEFAULT NOW() ON UPDATE NOW(),
     deleted_at DATETIME NULL

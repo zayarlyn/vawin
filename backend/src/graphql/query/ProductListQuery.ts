@@ -1,11 +1,11 @@
 // import { BillModel } from '@db/sequelize/model';
-import { Query, Resolver } from '@nestjs/graphql';
+import { Query, Resolver } from '@nestjs/graphql'
 // import { InjectModel } from '@nestjs/sequelize';
 // import { WhereOptions } from 'sequelize';
-import { ProductType } from '../type';
-import { InjectRepository } from '@nestjs/typeorm';
-import { Product } from '@db/entities';
-import { Repository } from 'typeorm';
+import { ProductType } from '../type'
+import { InjectRepository } from '@nestjs/typeorm'
+import { Product } from '@db/entities'
+import { Repository } from 'typeorm'
 // import { IsNotEmptyObject, IsOptional, IsString } from 'class-validator';
 // import { Type } from 'class-transformer';
 // import { GraphQLJSON } from 'graphql-scalars';
@@ -39,8 +39,8 @@ export class ProductListQueryResolver {
   async productList(): Promise<ProductType[]> {
     // const { where } = args;
 
-    return this.product.find();
+    return this.product.find()
     // return this.billModel.findAll({ where });
-    return;
+    return
   }
 }

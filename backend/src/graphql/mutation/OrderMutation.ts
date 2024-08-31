@@ -1,67 +1,62 @@
 // prettier-ignore
-import { Args, Field, ID, Mutation, Resolver, ArgsType, InputType } from '@nestjs/graphql';
-import { InjectRepository } from '@nestjs/typeorm';
-import { In, Repository } from 'typeorm';
+import { Args, ArgsType, Field, InputType, Int, Mutation, Resolver } from '@nestjs/graphql';
+import { QueryRunner } from 'typeorm'
 
-import { Order, Product } from '@db/entities';
-import { OrderType } from '../type';
+import { Order, OrderProduct } from '@db/entities'
+import { OrderType, OrderTypeInput } from '../type'
+import { BaseMutationResolver } from './BaseMutation'
 
 @InputType()
-class OrderMutationValuesInput {
-  @Field(() => [String])
-  productIds: string[];
+class OrderMutationValuesInput extends OrderTypeInput {
+  @Field(() => [Number], { nullable: true })
+  productIds: number[]
+  deletedProductIds: number[]
 }
 
 @ArgsType()
 class MArgs {
-  @Field(() => ID)
-  id: number;
+  @Field(() => Int, { nullable: true })
+  id: number
 
-  @Field(() => OrderMutationValuesInput)
-  values: OrderMutationValuesInput;
+  @Field(() => OrderMutationValuesInput, { nullable: true })
+  values: OrderMutationValuesInput
 
   @Field({ nullable: true })
-  delete: boolean;
+  deleted: boolean
+}
+
+interface MutationResponse {
+  id: number
 }
 
 @Resolver()
-export class OrderMutationResolver {
-  constructor(
-    @InjectRepository(Order) private order: Repository<Order>,
-    @InjectRepository(Product) private product: Repository<Product>,
-  ) {}
-
+export class OrderMutationResolver extends BaseMutationResolver {
   @Mutation(() => OrderType)
-  async orderMutation(@Args() args: MArgs): Promise<OrderType> {
-    const { id, values } = args;
-    console.log(args.values);
+  async orderMutation<OrderType>(@Args() args: MArgs): Promise<OrderType | MutationResponse> {
+    return this.withTransaction(async (runner: QueryRunner) => {
+      const { id, values, deleted } = args
 
-    // async orderMutation(): Promise<ProductType> {
-    // const { id, values } = args;
-    // values.date = new Date().toISOString().slice(0, 19).replace('T', ' ');
+      if (deleted) return this.doSoftDelete(runner, Order, id)
 
-    // console.log({ id, values });
-    // const [billDraft] = await this.billModel.findOrCreate({
-    //   where: { id },
-    //   defaults: { ...values },
-    // });
-
-    // billDraft.save();
-    // return billDraft;
-    // await this.order.save({});
-    this.checkProductAvailability(values.productIds);
-    return this.order.findOne({ where: { id } });
-    return;
+      const order = await runner.manager.save(Order, { id, ...values })
+      await this.saveRelation(runner, order, values)
+      return order
+    })
   }
 
-  private async checkProductAvailability(productIds: string[]) {
-    const products = await this.product.find({
-      where: { id: In(productIds) },
-      withDeleted: true,
-    });
-    console.log(products);
-    // if (products.length !== productIds.length) {
-    // throw new Http('Product not found', 404);
-    // }
+  private async saveRelation(runner: QueryRunner, order: Order, values: OrderMutationValuesInput) {
+    const { productIds, deletedProductIds } = values
+    if (deletedProductIds) {
+      await runner.manager.softDelete(
+        OrderProduct,
+        deletedProductIds.map((id) => ({ productId: id })),
+      )
+    }
+    if (productIds) {
+      await runner.manager.save(
+        OrderProduct,
+        productIds.map((productId) => ({ orderId: order.id, productId })),
+      )
+    }
   }
 }

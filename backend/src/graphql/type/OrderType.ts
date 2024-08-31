@@ -1,13 +1,21 @@
-import { Field, ObjectType } from '@nestjs/graphql';
-import { BaseType } from './BaseType';
-import { OrderProduct } from '@db/entities';
-import { OrderProductType } from './OrderProductType';
+import { OrderProduct } from '@db/entities'
+import { Field, InputType, ObjectType } from '@nestjs/graphql'
+
+import { BaseType } from './BaseType'
+import { OrderProductType } from './OrderProductType'
 
 @ObjectType()
 export class OrderType extends BaseType {
   @Field()
-  date: Date;
+  status: string
 
   @Field(() => [OrderProductType])
-  orderProducts: OrderProduct[];
+  orderProducts: OrderProduct[]
+}
+
+// for mutation
+@InputType()
+export class OrderTypeInput {
+  @Field({ nullable: true })
+  status: string
 }

@@ -2,9 +2,18 @@ use yyyy;
 
 SET FOREIGN_KEY_CHECKS = 0;
 
+DROP TABLE IF EXISTS `customer`;
 DROP TABLE IF EXISTS `product`;
 DROP TABLE IF EXISTS `order`;
 DROP TABLE IF EXISTS `order_product`;
+
+CREATE TABLE `customer` (
+    id BIGINT PRIMARY KEY AUTO_INCREMENT,
+    name VARCHAR(80) NOT NULL,
+    created_at DATETIME DEFAULT NOW(),
+    updated_at DATETIME DEFAULT NOW() ON UPDATE NOW(),
+    deleted_at DATETIME NULL
+) ENGINE = InnoDB;
 
 CREATE TABLE `product` (
     id BIGINT PRIMARY KEY AUTO_INCREMENT,
@@ -20,7 +29,10 @@ CREATE TABLE `order` (
     status ENUM('draft', 'paid', 'packaging', 'shipped', 'completed', 'cancelled', 'refunded') NOT NULL DEFAULT 'draft',
     created_at DATETIME DEFAULT NOW(),
     updated_at DATETIME DEFAULT NOW() ON UPDATE NOW(),
-    deleted_at DATETIME NULL
+    deleted_at DATETIME NULL,
+    customer_id BIGINT NOT NULL,
+
+    FOREIGN KEY (customer_id) REFERENCES `customer`(id)
 ) ENGINE = InnoDB;
 
 CREATE TABLE `order_product` (
@@ -34,3 +46,5 @@ CREATE TABLE `order_product` (
     FOREIGN KEY (order_id) REFERENCES `order`(id),
     FOREIGN KEY (product_id) REFERENCES `product`(id)
 ) ENGINE = InnoDB;
+
+

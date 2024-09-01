@@ -1,6 +1,6 @@
 import { Module } from '@nestjs/common'
 import { TypeOrmModule } from '@nestjs/typeorm'
-import { Order, OrderProduct, Product } from './entities'
+import { Customer, Order, OrderProduct, Product } from './entities'
 
 @Module({
   imports: [
@@ -11,7 +11,7 @@ import { Order, OrderProduct, Product } from './entities'
       username: 'root',
       password: '',
       database: 'yyyy',
-      entities: [Product, Order, OrderProduct],
+      entities: [Customer, Product, Order, OrderProduct],
       // logging: true,
     }),
   ],

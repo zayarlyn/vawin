@@ -5,6 +5,7 @@ import { DataSource, QueryRunner } from 'typeorm'
 
 import { Order, OrderProduct } from '@db/entities'
 import { OrderType, OrderTypeInput } from '../type'
+import { GraphQLError } from 'graphql'
 
 @InputType()
 class OrderMutationValuesInput extends OrderTypeInput {
@@ -31,10 +32,9 @@ interface MutationResponse {
 
 @Resolver()
 export class BaseMutationResolver {
-  constructor(@InjectDataSource() private dataSource: DataSource) {}
+  constructor(@InjectDataSource() private dataSource?: DataSource) {}
 
   async withTransaction(func: any) {
-    console.log(this.dataSource)
     const runner = this.dataSource.createQueryRunner()
     await runner.connect()
     await runner.startTransaction()
@@ -45,7 +45,7 @@ export class BaseMutationResolver {
       return result
     } catch (e) {
       await runner.rollbackTransaction()
-      return { id: 0 }
+      return new GraphQLError(e)
     } finally {
       // you need to release query runner which is manually created:
       await runner.release()

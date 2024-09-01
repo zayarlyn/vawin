@@ -10,6 +10,8 @@ import { BaseMutationResolver } from './BaseMutation'
 class OrderMutationValuesInput extends OrderTypeInput {
   @Field(() => [Number], { nullable: true })
   productIds: number[]
+
+  @Field(() => [Number], { nullable: true })
   deletedProductIds: number[]
 }
 
@@ -32,7 +34,7 @@ interface MutationResponse {
 @Resolver()
 export class OrderMutationResolver extends BaseMutationResolver {
   @Mutation(() => OrderType)
-  async orderMutation<OrderType>(@Args() args: MArgs): Promise<OrderType | MutationResponse> {
+  async orderMutation(@Args() args: MArgs): Promise<OrderType | MutationResponse> {
     return this.withTransaction(async (runner: QueryRunner) => {
       const { id, values, deleted } = args
 

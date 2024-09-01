@@ -8,6 +8,9 @@ import { TypeOrmModule } from '@nestjs/typeorm'
 import { OrderMutationResolver } from './mutation'
 import { OrderListQueryResolver, ProductListQueryResolver } from './query'
 import { ProductMutationResolver } from './mutation/ProductMutation'
+import { ObjectScalar } from './scalars'
+import { parse } from 'graphql'
+import { FindOptionsSelect } from 'typeorm'
 
 @Module({
   imports: [
@@ -21,18 +24,24 @@ import { ProductMutationResolver } from './mutation/ProductMutation'
       buildSchemaOptions: {
         numberScalarMode: 'integer',
       },
+      context: async (ctx) => {
+        return {
+          //@ts-ignore
+          selection: parse(ctx.req.body.query).definitions[0].selectionSet.selections[0].selectionSet.selections.map(
+            (s) => s.name.value,
+          ),
+        }
+      },
       // FIXME: why need to be JSON and not Json?
       // resolvers: { JSON: GraphQLJSON },
-      // resolvers: { Object: ObjectScalar },
+      resolvers: { Object: ObjectScalar },
     }),
   ],
-  providers: [
-    ProductListQueryResolver,
-    OrderListQueryResolver,
-
-    ProductMutationResolver,
-    OrderMutationResolver,
-  ],
+  providers: [ProductListQueryResolver, OrderListQueryResolver, ProductMutationResolver, OrderMutationResolver],
   // controllers: [],
 })
 export class GraphqlModule {}
+
+export interface MyGqlContext {
+  selection: FindOptionsSelect<any>
+}

@@ -11,6 +11,7 @@ import { ProductMutationResolver } from './mutation/ProductMutation'
 import { ObjectScalar } from './scalars'
 import { parse } from 'graphql'
 import { FindOptionsSelect } from 'typeorm'
+import { CustomerListQueryResolver } from './query/CustomerListQuery'
 
 @Module({
   imports: [
@@ -37,7 +38,13 @@ import { FindOptionsSelect } from 'typeorm'
       resolvers: { Object: ObjectScalar },
     }),
   ],
-  providers: [ProductListQueryResolver, OrderListQueryResolver, ProductMutationResolver, OrderMutationResolver],
+  providers: [
+    ProductListQueryResolver,
+    OrderListQueryResolver,
+    CustomerListQueryResolver,
+    ProductMutationResolver,
+    OrderMutationResolver,
+  ],
   // controllers: [],
 })
 export class GraphqlModule {}

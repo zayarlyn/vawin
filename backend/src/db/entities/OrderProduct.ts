@@ -1,8 +1,8 @@
 // prettier-ignore
 import { Column, Entity, JoinColumn, ManyToOne } from 'typeorm';
 import { BaseEntity } from './BaseEntity'
-import { Order } from './OrderEntity'
-import { Product } from './ProductEntity'
+import { Order } from './Order'
+import { Product } from './Product'
 
 @Entity({ name: 'order_product' })
 export class OrderProduct extends BaseEntity {

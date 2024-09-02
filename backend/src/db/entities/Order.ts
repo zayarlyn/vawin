@@ -1,8 +1,8 @@
 // prettier-ignore
 import { Entity, Column, OneToMany, ManyToOne, JoinColumn } from 'typeorm';
 import { BaseEntity } from './BaseEntity'
-import { OrderProduct } from './OrderProductEntity'
-import { Customer } from './CustomerEntity'
+import { OrderProduct } from './OrderProduct'
+import { Customer } from './Customer'
 
 // prettier-ignore
 export const ORDER_STATUS_ENUM = ['draft', 'paid', 'packaging', 'shipped', 'completed', 'cancelled', 'refunded']

@@ -10,9 +10,15 @@ DROP TABLE IF EXISTS `order_product`;
 CREATE TABLE `customer` (
     id BIGINT PRIMARY KEY AUTO_INCREMENT,
     name VARCHAR(80) NOT NULL,
+    email VARCHAR(80) NOT NULL UNIQUE,
+    phone VARCHAR(30) NOT NULL ,
+    email_verified_at DATETIME NULL,
+    phone_verified_at DATETIME NULL,
     created_at DATETIME DEFAULT NOW(),
     updated_at DATETIME DEFAULT NOW() ON UPDATE NOW(),
-    deleted_at DATETIME NULL
+    deleted_at DATETIME NULL,
+
+    user_id VARCHAR(30) NOT NULL
 ) ENGINE = InnoDB;
 
 CREATE TABLE `product` (
@@ -30,6 +36,7 @@ CREATE TABLE `order` (
     created_at DATETIME DEFAULT NOW(),
     updated_at DATETIME DEFAULT NOW() ON UPDATE NOW(),
     deleted_at DATETIME NULL,
+    
     customer_id BIGINT NOT NULL,
 
     FOREIGN KEY (customer_id) REFERENCES `customer`(id)
@@ -40,6 +47,7 @@ CREATE TABLE `order_product` (
     created_at DATETIME DEFAULT NOW(),
     updated_at DATETIME DEFAULT NOW() ON UPDATE NOW(),
     deleted_at DATETIME NULL,
+
     order_id BIGINT NOT NULL,
     product_id BIGINT NOT NULL,
 

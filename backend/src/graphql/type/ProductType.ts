@@ -1,5 +1,6 @@
-import { Field, Float, InputType, ObjectType } from '@nestjs/graphql'
+import { Field, Float, InputType, ObjectType, ResolveProperty } from '@nestjs/graphql'
 import { BaseType } from './BaseType'
+import { faker } from '@faker-js/faker'
 
 @ObjectType()
 export class ProductType extends BaseType {
@@ -8,6 +9,15 @@ export class ProductType extends BaseType {
 
   @Field(() => Float)
   price: number
+
+  @Field({
+    middleware: [
+      ({}) => {
+        return faker.image.urlLoremFlickr({ category: 'sneakers' })
+      },
+    ],
+  })
+  url: string
 }
 
 @InputType()

@@ -36,11 +36,12 @@ export class BaseListQueryResolver {
   async findAll<Entity>(relations: FindOptionsRelations<Entity>, args: QArgs, ctx: MyGqlContext): Promise<any[]> {
     const { where, withDeleted, pagination = { skip: 0, take: 50 } } = args
 
+    console.log(ctx.selection)
     return this.dataSource.manager.find(this.entity, {
       where,
       withDeleted,
       ...pagination,
-      select: ctx.selection,
+      // select: ctx.selection,
       relations,
     })
   }

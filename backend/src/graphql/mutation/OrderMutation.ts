@@ -40,7 +40,7 @@ export class OrderMutationResolver extends BaseMutationResolver {
 
       if (deleted) return this.doSoftDelete(runner, Order, id)
 
-      const order = await runner.manager.save(Order, { id, ...values })
+      const order = await runner.manager.save(Order, { id, customerId: 4, ...values })
       await this.saveRelation(runner, order, values)
       return order
     })

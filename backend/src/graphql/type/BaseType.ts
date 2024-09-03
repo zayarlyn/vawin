@@ -1,8 +1,8 @@
-import { Field, ID, ObjectType } from '@nestjs/graphql'
+import { Field, ID, Int, ObjectType } from '@nestjs/graphql'
 
 @ObjectType()
 export class BaseType {
-  @Field(() => ID)
+  @Field(() => Int)
   id: number
 
   @Field()

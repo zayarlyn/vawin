@@ -1,6 +1,6 @@
 import { ApolloServerPluginLandingPageLocalDefault } from '@apollo/server/plugin/landingPage/default'
 import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo'
-import { Module } from '@nestjs/common'
+import { Logger, Module } from '@nestjs/common'
 import { GraphQLModule as NestJSGraphQLModule } from '@nestjs/graphql'
 // import { GraphQLJSON } from 'graphql-scalars';
 import { Order, OrderProduct, Product } from '@db/entities'
@@ -26,11 +26,12 @@ import { CustomerListQueryResolver } from './query/CustomerListQuery'
         numberScalarMode: 'integer',
       },
       context: async (ctx) => {
+        // console.log('ctx.req.body.query', ctx.req.body.query)
         return {
-          //@ts-ignore
-          selection: parse(ctx.req.body.query).definitions[0].selectionSet.selections[0].selectionSet.selections.map(
-            (s) => s.name.value,
-          ),
+          selection: parse(ctx.req.body.query)
+            //@ts-ignore
+            .definitions[0].selectionSet.selections[0].selectionSet.selections.map((s) => s.name.value)
+            .filter((s) => s !== '__typename'),
         }
       },
       // FIXME: why need to be JSON and not Json?

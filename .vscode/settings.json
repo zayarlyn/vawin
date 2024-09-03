@@ -21,8 +21,8 @@
 		"**/.eslintrc.js": true,
 		"**/.prettierrc": true,
 		"**/package-lock.json": true,
-		"**/tsconfig.build.json": true,
-		"**/.gitignore": true
+		"**/tsconfig.build.json": true
+		// "**/.gitignore": true
 		// "**/": true
 	}
 }

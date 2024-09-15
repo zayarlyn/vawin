@@ -1,5 +1,5 @@
 // prettier-ignore
-import { CreateDateColumn, DeleteDateColumn, PrimaryGeneratedColumn, UpdateDateColumn } from 'typeorm';
+import { Column, CreateDateColumn, DeleteDateColumn, PrimaryGeneratedColumn, UpdateDateColumn } from 'typeorm';
 
 export class BaseEntity {
   @PrimaryGeneratedColumn()
@@ -13,4 +13,9 @@ export class BaseEntity {
 
   @DeleteDateColumn({ name: 'deleted_at' })
   deletedAt: Date
+}
+
+export class BaseVendorEntity extends BaseEntity {
+  @Column({ name: 'vendor_id' })
+  vendorId: string
 }

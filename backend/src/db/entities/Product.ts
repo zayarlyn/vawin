@@ -1,9 +1,9 @@
 // prettier-ignore
-import { Entity, Column } from 'typeorm';
-import { BaseEntity } from './BaseEntity'
+import { Column, Entity } from 'typeorm';
+import { BaseVendorEntity } from './BaseEntity'
 
 @Entity()
-export class Product extends BaseEntity {
+export class Product extends BaseVendorEntity {
   @Column({ type: 'double' })
   name: string
 

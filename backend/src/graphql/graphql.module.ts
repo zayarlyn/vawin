@@ -3,7 +3,7 @@ import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo'
 import { Logger, Module } from '@nestjs/common'
 import { GraphQLModule as NestJSGraphQLModule } from '@nestjs/graphql'
 // import { GraphQLJSON } from 'graphql-scalars';
-import { Order, OrderProduct, Product } from '@db/entities'
+import { Customer, Order, OrderProduct, Product, Staff } from '@db/entities'
 import { TypeOrmModule } from '@nestjs/typeorm'
 import { OrderMutationResolver } from './mutation'
 import { OrderListQueryResolver, ProductListQueryResolver } from './query'
@@ -16,7 +16,7 @@ import { CustomerListQueryResolver } from './query/CustomerListQuery'
 @Module({
   imports: [
     // SequelizeModule.forFeature([BillModel]),
-    TypeOrmModule.forFeature([Product, Order, OrderProduct]),
+    TypeOrmModule.forFeature([Product, Order, OrderProduct, Customer, Staff]),
     NestJSGraphQLModule.forRoot<ApolloDriverConfig>({
       driver: ApolloDriver,
       autoSchemaFile: true,

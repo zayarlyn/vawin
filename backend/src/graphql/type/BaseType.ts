@@ -13,4 +13,7 @@ export class BaseType {
 
   @Field({ nullable: true })
   deletedAt?: Date
+
+  @Field()
+  vendorId: string
 }

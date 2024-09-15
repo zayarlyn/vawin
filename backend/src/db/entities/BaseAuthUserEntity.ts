@@ -1,8 +1,8 @@
 import { Column, Entity } from 'typeorm'
-import { BaseEntity } from './BaseEntity'
+import { BaseVendorEntity } from './BaseEntity'
 
 @Entity()
-export class BaseAuthUserEntity extends BaseEntity {
+export class BaseAuthUserEntity extends BaseVendorEntity {
   @Column()
   name: string
 

@@ -4,6 +4,7 @@ import { BaseEntity } from './BaseEntity'
 import { Order } from './Order'
 import { Product } from './Product'
 
+// NODE: there is no ventorId in the OrderProduct entity
 @Entity({ name: 'order_product' })
 export class OrderProduct extends BaseEntity {
   @Column({ name: 'order_id' })

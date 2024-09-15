@@ -9,9 +9,9 @@ export const ObjectScalar = new GraphQLScalarType({
     return JSON.parse(value)
   },
   parseValue: (value: string) => {
-    // return value
+    return value
     // console.log('pv', value);
-    return JSON.stringify(value)
+    // return JSON.stringify(value)
   },
   // FIXME: not called
   // parseLiteral: (ast, value) => {

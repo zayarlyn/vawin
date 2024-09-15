@@ -1,14 +1,14 @@
 // prettier-ignore
-import { Entity, Column, OneToMany, ManyToOne, JoinColumn } from 'typeorm';
-import { BaseEntity } from './BaseEntity'
-import { OrderProduct } from './OrderProduct'
+import { Column, Entity, JoinColumn, ManyToOne, OneToMany } from 'typeorm';
+import { BaseVendorEntity } from './BaseEntity'
 import { Customer } from './Customer'
+import { OrderProduct } from './OrderProduct'
 
 // prettier-ignore
 export const ORDER_STATUS_ENUM = ['draft', 'paid', 'packaging', 'shipped', 'completed', 'cancelled', 'refunded']
 
 @Entity()
-export class Order extends BaseEntity {
+export class Order extends BaseVendorEntity {
   @Column({
     type: 'enum',
     enum: ORDER_STATUS_ENUM,

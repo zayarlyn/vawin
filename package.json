@@ -4,7 +4,7 @@
 	"main": "index.js",
 	"scripts": {
 		"test": "echo \"Error: no test specified\" && exit 1",
-		"dev": "conc -n 'backend,apps > store' 'cd backend && npm run dev' 'cd apps/store && npm run dev' 'cd apps/store && npm run graphql-codegen'"
+		"dev": "conc -n 'backend,apps > store, store-gql-codegen' 'cd backend && npm run dev' 'cd apps/store && npm run dev' 'cd apps/store && npm run graphql-codegen'"
 	},
 	"keywords": [],
 	"author": "",

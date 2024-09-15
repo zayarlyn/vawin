@@ -1,4 +1,4 @@
-import { Customer, Order, ORDER_STATUS_ENUM, OrderProduct, Product } from '@db/entities'
+import { Customer, Order, ORDER_STATUS_ENUM, OrderProduct, Product, Staff } from '@db/entities'
 import { faker } from '@faker-js/faker'
 import { Controller, Get } from '@nestjs/common'
 import { InjectRepository } from '@nestjs/typeorm'
@@ -12,10 +12,12 @@ export class AppController {
     @InjectRepository(Order) private order: Repository<Order>,
     @InjectRepository(OrderProduct)
     private orderProduct: Repository<OrderProduct>,
+    @InjectRepository(Staff) private staff: Repository<Staff>,
   ) {}
 
   @Get('/seed')
   async getHello(): Promise<string> {
+    const vendorId = 'pisi'
     await this.orderProduct.delete({})
     await this.product.delete({})
     await this.order.delete({})
@@ -24,6 +26,7 @@ export class AppController {
     const fakeProducts = Array.from({ length: 5 }).map(() => ({
       name: faker.commerce.productName(),
       price: +faker.commerce.price(),
+      vendorId,
     }))
     // this.product.create(fakeProducts);
     const products = await this.product.save(fakeProducts)
@@ -35,12 +38,25 @@ export class AppController {
       email: faker.internet.email(),
       emailVerifiedAt: faker.date.past(),
       phoneVerifiedAt: faker.date.past(),
+      vendorId,
     }))
     const customers = await this.customer.save(fakeCustomers)
+
+    const fakeStaffs = Array.from({ length: 3 }).map(() => ({
+      userId: '123',
+      name: faker.person.fullName(),
+      phone: faker.phone.number(),
+      email: faker.internet.email(),
+      emailVerifiedAt: faker.date.past(),
+      phoneVerifiedAt: faker.date.past(),
+      vendorId,
+    }))
+    const staffs = await this.customer.save(fakeStaffs)
 
     const fakeOrders = Array.from({ length: 3 }).map(() => ({
       status: ORDER_STATUS_ENUM[Math.floor((ORDER_STATUS_ENUM.length - 1) * Math.random())],
       customerId: customers[Math.floor((customers.length - 1) * Math.random())].id,
+      vendorId,
     }))
     const orders = await this.order.save(fakeOrders)
 

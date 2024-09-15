@@ -12,6 +12,7 @@ export class ProductListQueryResolver extends BaseListQueryResolver {
 
   @Query(() => [ProductType])
   async productList(@Args() args: QArgs, @Context() ctx: MyGqlContext): Promise<ProductType[]> {
+    console.log({ args })
     return this.findAll(undefined, args, ctx)
   }
 }

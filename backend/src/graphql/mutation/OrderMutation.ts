@@ -1,34 +1,28 @@
 // prettier-ignore
-import { Args, ArgsType, Field, InputType, Int, Mutation, Resolver } from '@nestjs/graphql';
+import { Args, ArgsType, Field, Int, Mutation, Resolver } from '@nestjs/graphql';
 import { QueryRunner } from 'typeorm'
 
-import { Order, OrderProduct } from '@db/entities'
-import { OrderType, OrderTypeInput } from '../type'
-import { BaseMutationResolver } from './BaseMutation'
-
-@InputType()
-class OrderMutationValuesInput extends OrderTypeInput {
-  @Field(() => [Number], { nullable: true })
-  productIds: number[]
-
-  @Field(() => [Number], { nullable: true })
-  deletedProductIds: number[]
-}
+import { Order } from '@db/entities'
+import { ObjectScalar } from '../scalars'
+import { OrderMVI, OrderType } from '../type'
+import { BaseMutationResolver, MRelations, MutationResponse } from './BaseMutation'
 
 @ArgsType()
 class MArgs {
   @Field(() => Int, { nullable: true })
   id: number
 
-  @Field(() => OrderMutationValuesInput, { nullable: true })
-  values: OrderMutationValuesInput
+  @Field(() => ObjectScalar, { nullable: true })
+  values: OrderMVI
+
+  @Field(() => ObjectScalar, { nullable: true })
+  relations: MRelations
 
   @Field({ nullable: true })
   deleted: boolean
-}
 
-interface MutationResponse {
-  id: number
+  @Field()
+  vendorId: string
 }
 
 @Resolver()
@@ -36,29 +30,14 @@ export class OrderMutationResolver extends BaseMutationResolver {
   @Mutation(() => OrderType)
   async orderMutation(@Args() args: MArgs): Promise<OrderType | MutationResponse> {
     return this.withTransaction(async (runner: QueryRunner) => {
-      const { id, values, deleted } = args
+      const { id, values, relations, deleted, vendorId } = args
 
       if (deleted) return this.doSoftDelete(runner, Order, id)
 
-      const order = await runner.manager.save(Order, { id, customerId: 4, ...values })
-      await this.saveRelation(runner, order, values)
+      const order = await runner.manager.save(Order, { id, vendorId, customerId: 7, ...values })
+      await this.saveRelations(runner, order, relations)
+
       return order
     })
-  }
-
-  private async saveRelation(runner: QueryRunner, order: Order, values: OrderMutationValuesInput) {
-    const { productIds, deletedProductIds } = values
-    if (deletedProductIds) {
-      await runner.manager.softDelete(
-        OrderProduct,
-        deletedProductIds.map((id) => ({ productId: id })),
-      )
-    }
-    if (productIds) {
-      await runner.manager.save(
-        OrderProduct,
-        productIds.map((productId) => ({ orderId: order.id, productId })),
-      )
-    }
   }
 }

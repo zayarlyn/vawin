@@ -15,7 +15,7 @@ export class OrderType extends BaseType {
 
 // for mutation
 @InputType()
-export class OrderTypeInput {
+export class OrderMVI {
   @Field({ nullable: true })
   status: string
 }
